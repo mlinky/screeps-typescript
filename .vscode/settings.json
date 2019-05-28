@@ -26,7 +26,6 @@
     ".prett*": true,
     ".rpt2_cache": true,
     ".vscode": true,
-    "blah": true,
     "CONTRIB*": true,
     "dist": true,
     "docs": true,
