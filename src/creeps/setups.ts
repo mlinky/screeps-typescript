@@ -1,4 +1,4 @@
-import { CreepSetup } from './CreepSetup';
+import { CreepSetup } from './creepSetup';
 
 /**
  * A mapping of role types to string constants used for naming creeps and accessing them by role
