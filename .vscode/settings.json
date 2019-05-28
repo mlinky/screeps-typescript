@@ -19,5 +19,18 @@
   },
   "[typescript]": {
     "editor.formatOnSave": true
+  },
+  "files.exclude": {
+    ".editorconfig": true,
+    ".git*": true,
+    ".prett*": true,
+    ".rpt2_cache": true,
+    ".vscode": true,
+    "CONTRIB*": true,
+    "dist": true,
+    "LIC*": true,
+    "node_modules": true,
+    "READ*": true,
+    "test": true
   }
 }
