@@ -4,6 +4,8 @@ import { gameState } from "defs";
 import { log } from "log/log";
 import { profile } from "profiler/decorator";
 import { MyCluster } from "state/cluster";
+import { MyRoom } from "state/room";
+import { Roles } from "./setups";
 
 @profile
 export class CreepWorker extends MyCreep {
@@ -103,13 +105,17 @@ export class CreepWorker extends MyCreep {
 
     public static required(cluster: MyCluster): number {
         // How many miners required for the cluster
-        if (gameState.rooms[cluster.clusterName].controller) {
-            switch (gameState.rooms[cluster.clusterName].controller!.level()) {
-                case 1: {
-                    return 6;
-                }
+        const room: MyRoom = gameState.rooms[cluster.clusterName];
+        if (room.controller) {
+            switch (room.controller!.level()) {
+                case 1:
                 case 2: {
-                    return 6;
+                    if (room.census[Roles.drone]) {
+                        // 2 workers for each drone mining
+                        return room.census[Roles.drone] * 2;
+                    } else {
+                        return 2;
+                    }
                 }
                 case 3: {
                     return 2;

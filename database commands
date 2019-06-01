@@ -1,0 +1,1 @@
+storage.db['rooms.objects'].update({ _id: 'ff7a07728e60965' },{ $set: { level: 3 }})

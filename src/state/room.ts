@@ -48,6 +48,8 @@ export class MyRoom {
     public constructionSites: { [sourceID: string]: MyContructionSite } = {};
     public roads: { [sourceID: string]: MyRoad } = {};
 
+    public census: { [role: string]: number } = {};
+    public creepCount: number = 0;
     public hostiles: { [creepID: string]: MyHostileCreep } = {};
 
     public haulDemand: number = 0; // Rolling average of hauling demand
@@ -129,6 +131,8 @@ export class MyRoom {
 
         this.actionHostiles();
 
+        this.updateCensus();
+
         this.runVisuals();
 
     }
@@ -152,7 +156,7 @@ export class MyRoom {
             if (this.haulDemand < 1000) {
                 // Probably too many haulers
                 this.haulersRequired = Math.max(this.haulersRequired - 1, 2);
-                this.upgradersRequired = Math.max(this.upgradersRequired - 1, 2);
+                this.upgradersRequired = Math.max(this.upgradersRequired - 1, 0);
             } else if (this.haulDemand > 4000) {
                 // Too few haulers
                 this.haulersRequired = Math.min(this.haulersRequired + 1, 6);
@@ -196,33 +200,43 @@ export class MyRoom {
         }
     }
 
+    private updateCensus(): void {
+
+        if (checkRefresh(_REFRESH.roomCensus)) {
+
+            let count: number = 0;
+            const creeps = _.filter(gameState.creeps, c => c.workRoom === this.roomName);
+
+            this.census = {};
+            this.creepCount = 0;
+
+            for (const c of creeps) {
+                if (this.census[c.role]) {
+                    this.census[c.role]++;
+                } else {
+                    this.census[c.role] = 1;
+                }
+                this.creepCount++;
+            }
+        }
+    }
+
     private runVisuals() {
         const room: Room = Game.rooms[this.roomName];
         let visRow: number = 0;
         const visCol: number = 0;
-        const census: { [role: string]: number } = {};
-        let count: number = 0;
         const creeps = _.filter(gameState.creeps, c => c.workRoom === this.roomName);
-
-        for (const c of creeps) {
-            if (census[c.role]) {
-                census[c.role]++;
-            } else {
-                census[c.role] = 1;
-            }
-            count++;
-        }
 
         if (Visuals.sources) {
             placeText(`Sources:    ${Object.keys(gameState.rooms[this.roomName].sources).length}`);
         }
 
         if (Visuals.creeps) {
-            placeText(`Creeps:    ${count}`);
+            placeText(`Creeps:    ${this.creepCount}`);
             placeText(' ');
 
-            for (const r in census) {
-                placeText(`${r} - ${census[r]}`);
+            for (const r in this.census) {
+                placeText(`${r} - ${this.census[r]}`);
             }
         }
 

@@ -8,6 +8,8 @@ export const _REFRESH = {
 
     // Room objects
     droppedResource: 1,
+    roomCensus: 10,
+
 
     // Room planner
     flags: 1,
