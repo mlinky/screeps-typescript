@@ -25,11 +25,11 @@ global.setProp = (function(A, B) {
     });
 });
 global.Ensure = (function(A, B) {
-    Object.keys(B).forEach(function(N) {
+    for (const N in B) {
         if (A[N] === undefined) {
             A[N] = B[N];
         }
-    });
+    }
 });
 Ensure(global, {
 	GREEN, COLOR_GREEN,
