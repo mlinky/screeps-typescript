@@ -1,2 +1,0 @@
-storage.db['rooms.objects'].update({ _id: 'ff7a07728e60965' },{ $set: { level: 3 }})
-storage.db['users'].update({ username: 'jtboyz' },{ $set: { gcl: 65000000000 }})
