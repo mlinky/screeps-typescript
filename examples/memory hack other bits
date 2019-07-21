@@ -1,0 +1,25 @@
+interface RawMemory {
+  _parsed: Memory;
+}
+
+declare namespace NodeJS {
+  interface Global {
+    Memory: Memory;
+    ...
+  }
+}
+
+main.ts
+
+import { memoryHackLoop } from "utils/utils";
+...
+export const loop = memoryHackLoop(() => {
+
+  kernal.loop();
+
+  let stats = GraphanaStats.getStats();
+  stats.cpu = Game.cpu;
+  stats.cpu.used = Game.cpu.getUsed();
+  if (Game.cpu.getHeapStatistics) stats.heap = Game.cpu.getHeapStatistics();
+  RawMemory.segments[3] = JSON.stringify(stats);
+});
